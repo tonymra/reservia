@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,18 +16,20 @@ use Inertia\Inertia;
 |
 */
 
-// Redirect the default page to the login page
+// Redirects authenticated users to dashboard, others to login
+
 Route::get('/', function () {
     if (auth()->check()) {
-        // Redirect to dashboard if already logged in
         return redirect()->route('dashboard');
     }
-    // Redirect to login if not logged in
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Dashboard
+
+Route::get('/', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('auth');
+
 
 require __DIR__.'/auth.php';
