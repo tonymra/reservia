@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,12 @@ Route::get('/', function () {
 
 Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard')
+    ->middleware('auth');
+
+// Rooms
+
+Route::get('rooms', [RoomController::class, 'index'])
+    ->name('rooms.index')
     ->middleware('auth');
 
 

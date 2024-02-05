@@ -29,10 +29,10 @@
                                         <li>
                                             <ul role="list" class="-mx-2 space-y-1">
                                                 <li v-for="item in navigation" :key="item.name">
-                                                    <a :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                                    <Link :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                                         <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                                                         {{ item.name }}
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </li>
@@ -60,10 +60,10 @@
                         <li>
                             <ul role="list" class="-mx-2 space-y-1">
                                 <li v-for="item in navigation" :key="item.name">
-                                    <a :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
+                                    <Link :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold']">
                                         <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                                         {{ item.name }}
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -132,9 +132,9 @@
 
 
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { Inertia } from '@inertiajs/inertia'
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 import {
     Dialog,
     DialogPanel,
@@ -154,14 +154,14 @@ import {
     XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import {BuildingOfficeIcon} from "@heroicons/vue/16/solid";
+import { BuildingOfficeIcon } from "@heroicons/vue/16/solid";
 
-const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Reservations', href: '#', icon: FolderIcon, current: false },
-    { name: 'Rooms', href: '#', icon: BuildingOfficeIcon, current: false },
-    { name: 'Users', href: '#', icon: UsersIcon, current: false }
-]
+const navigation = reactive([
+    { name: 'Dashboard', href: '/', icon: HomeIcon },
+    { name: 'Reservations', href: '/', icon: FolderIcon },
+    { name: 'Rooms', href: '/rooms', icon: BuildingOfficeIcon },
+    { name: 'Users', href: '/', icon: UsersIcon }
+]);
 const userNavigation = [
     { name: 'My profile', href: '#' },
     { name: 'Sign out', href: '#' },
@@ -172,5 +172,12 @@ const sidebarOpen = ref(false)
 function logout() {
     Inertia.post(route('logout'))
 }
-</script>
 
+// Use the onMounted lifecycle hook to update navigation items based on the current URL
+onMounted(() => {
+    const currentPath = usePage().url;
+    navigation.forEach(item => {
+        item.current = currentPath.endsWith(item.href);
+    });
+});
+</script>
