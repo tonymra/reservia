@@ -1,13 +1,27 @@
 <script setup>
-import { ref } from 'vue';
+import { watch, ref } from 'vue';
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import BreezeDropdown from '@/Components/Dropdown.vue';
 import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
+import { Link, usePage } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
+
+function determinePageTitle(routeName) {
+    const titles = {
+        'dashboard': 'Dashboard - Reservia',
+        'rooms.index': 'Rooms - Reservia',
+    };
+    return titles[routeName] || 'Reservia';
+}
+
+const { props } = usePage();
+watch(() => props.value.routeName, (newRouteName) => {
+    document.title = determinePageTitle(newRouteName);
+}, { immediate: true });
+
 </script>
 
 <template>
