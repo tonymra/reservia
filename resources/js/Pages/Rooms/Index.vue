@@ -1,4 +1,3 @@
-
 <template>
     <Head title="Dashboard" />
 
@@ -12,11 +11,14 @@
         <div class="py-12">
             <div class="px-4 sm:px-6 lg:px-8">
                 <div class="sm:flex sm:items-center">
+                    <SuccessMessage :message="flash.success" />
                     <div class="sm:flex-auto">
 
                     </div>
                     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button type="button" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add room</button>
+                        <Link :href="route('rooms.create')" class="inline-block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Add room
+                        </Link>
                     </div>
                 </div>
                 <div class="mt-8 flow-root">
@@ -40,8 +42,10 @@
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ room.price }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ room.room_type }}</td>
                                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, {{ room.room_number }}</span></a>
+                                            <Link :href="route('rooms.edit', room.id)" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</Link>
+                                            <button @click="confirmDelete(room.id)" class="text-red-600 hover:text-red-900">Delete</button>
                                         </td>
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -52,19 +56,36 @@
             </div>
         </div>
     </BreezeAuthenticatedLayout>
+    <Pagination :links="props.rooms.links" />
 </template>
 
 
 <script setup>
 import { ref } from 'vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import {Head, usePage} from '@inertiajs/inertia-vue3';
+import {Head,Link,  usePage} from '@inertiajs/inertia-vue3';
+import Pagination from '@/Components/Pagination.vue';
+import SuccessMessage from "@/Components/Shared/SuccessMessage.vue";
+import {Inertia} from "@inertiajs/inertia";
 
-// Access the Inertia page props directly
+
+const page = usePage();
+const flash = page.props.value.flash || {};
 const props = usePage().props;
 
+const confirmDelete = (roomId) => {
+    if (confirm('Are you sure you want to delete this room?')) {
+        Inertia.delete(route('rooms.destroy', roomId), {
+            onSuccess: () => {
+                // Optionally, you can add success handling here, such as showing a success message
+            }
+        });
+    }
+};
+
+console.log("Flash log: " + JSON.stringify(flash, null, 2));
 // Log the rooms to see the structure
-console.log(props.rooms);
+console.log("Rooms" + props.rooms);
 
 // Since props is reactive, you can directly use props.rooms in your template
 // No need to wrap it with ref() unless you're manipulating it

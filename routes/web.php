@@ -37,6 +37,23 @@ Route::get('/', [DashboardController::class, 'index'])
 Route::get('rooms', [RoomController::class, 'index'])
     ->name('rooms.index')
     ->middleware('auth');
+Route::get('rooms/create', [RoomController::class, 'create'])
+    ->name('rooms.create')
+    ->middleware('auth');
+Route::post('rooms/store', [RoomController::class, 'store'])
+    ->name('rooms.store')
+    ->middleware('auth');
+Route::get('rooms/{room}/edit', [RoomController::class, 'edit'])
+    ->name('rooms.edit')
+    ->middleware('auth');
+Route::put('rooms/{roomId}', [RoomController::class, 'update'])
+    ->name('rooms.update')
+    ->middleware('auth');
+Route::delete('rooms/delete/{roomId}', [RoomController::class, 'destroy'])
+    ->name('rooms.destroy')
+    ->middleware('auth');
+
+
 
 
 require __DIR__.'/auth.php';

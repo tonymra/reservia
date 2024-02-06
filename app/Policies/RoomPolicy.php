@@ -19,7 +19,7 @@ class RoomPolicy
      */
     public function viewAny(User $user)
     {
-        return true; // All authenticated users can view any room
+        return true;
     }
 
     /**
@@ -29,9 +29,9 @@ class RoomPolicy
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Room $room)
+    public function view(User $user)
     {
-        return true; // All authenticated users can view a specific room
+        return true;
     }
 
     /**
@@ -54,7 +54,7 @@ class RoomPolicy
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Room $room)
+    public function update(User $user)
     {
         return $user->user_type === 'Super Admin'
             ? Response::allow()
@@ -68,7 +68,7 @@ class RoomPolicy
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Room $room)
+    public function delete(User $user)
     {
         return $user->user_type === 'Super Admin'
             ? Response::allow()
@@ -82,7 +82,7 @@ class RoomPolicy
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Room $room)
+    public function restore(User $user)
     {
         return $user->user_type === 'Super Admin'
             ? Response::allow()
@@ -96,7 +96,7 @@ class RoomPolicy
      * @param  \App\Models\Room  $room
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Room $room)
+    public function forceDelete(User $user)
     {
         return $user->user_type === 'Super Admin'
             ? Response::allow()
