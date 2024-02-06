@@ -21509,6 +21509,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+/* harmony import */ var _Components_Shared_SuccessMessage_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/Components/Shared/SuccessMessage.vue */ "./resources/js/Components/Shared/SuccessMessage.vue");
+
 
 
 
@@ -21521,8 +21523,8 @@ __webpack_require__.r(__webpack_exports__);
     var _usePage = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.usePage)(),
       props = _usePage.props;
     var room = (0,vue__WEBPACK_IMPORTED_MODULE_3__.reactive)(props.value.room);
-    console.log('Props:', props);
-    console.log('Room:', room);
+    console.log('Props Edit:', props);
+    console.log('Room Edit:', room);
 
     // Initialize form state with room data
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
@@ -21538,7 +21540,9 @@ __webpack_require__.r(__webpack_exports__);
       form.put(route('rooms.update', form.id), {
         preserveScroll: true,
         onSuccess: function onSuccess() {
-          _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.visit(route('rooms.index'));
+          _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.visit(route('rooms.index'), {
+            only: ['flash']
+          });
         }
       });
     };
@@ -21563,7 +21567,8 @@ __webpack_require__.r(__webpack_exports__);
       get Inertia() {
         return _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia;
       },
-      reactive: vue__WEBPACK_IMPORTED_MODULE_3__.reactive
+      reactive: vue__WEBPACK_IMPORTED_MODULE_3__.reactive,
+      successMessage: _Components_Shared_SuccessMessage_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,
@@ -21604,20 +21609,41 @@ __webpack_require__.r(__webpack_exports__);
     var __expose = _ref.expose;
     __expose();
     var page = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)();
-    var flash = page.props.value.flash || {};
+    var flash = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)().props.value.flash;
     var props = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.usePage)().props;
+    var search = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
+    var searchRooms = function searchRooms() {
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia.get(route('rooms.index', {
+        search: search.value
+      }), {}, {
+        preserveState: true,
+        replace: true,
+        preserveScroll: true
+      });
+    };
+
+    // Reactive state for showing the success message
+    var showSuccessMessage = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)(false);
+    var successMessage = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
+    (0,vue__WEBPACK_IMPORTED_MODULE_0__.watchEffect)(function () {
+      var _page$props$value$fla;
+      successMessage.value = ((_page$props$value$fla = page.props.value.flash) === null || _page$props$value$fla === void 0 ? void 0 : _page$props$value$fla.success) || '';
+    });
     var confirmDelete = function confirmDelete(roomId) {
       if (confirm('Are you sure you want to delete this room?')) {
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_5__.Inertia["delete"](route('rooms.destroy', roomId), {
           onSuccess: function onSuccess() {
-            // Optionally, you can add success handling here, such as showing a success message
+            successMessage.value = 'Room deleted successfully.';
+            showSuccessMessage.value = true;
+            // Optionally reset the message after a delay
+            setTimeout(function () {
+              showSuccessMessage.value = false;
+            }, 3000); // Hide after 3 seconds
           }
         });
       }
     };
-    console.log("Flash log: " + JSON.stringify(flash, null, 2));
-    // Log the rooms to see the structure
-    console.log("Rooms" + props.rooms);
+    console.log("Rooms Index" + props.rooms);
 
     // Since props is reactive, you can directly use props.rooms in your template
     // No need to wrap it with ref() unless you're manipulating it
@@ -21626,8 +21652,13 @@ __webpack_require__.r(__webpack_exports__);
       page: page,
       flash: flash,
       props: props,
+      search: search,
+      searchRooms: searchRooms,
+      showSuccessMessage: showSuccessMessage,
+      successMessage: successMessage,
       confirmDelete: confirmDelete,
       ref: vue__WEBPACK_IMPORTED_MODULE_0__.ref,
+      watchEffect: vue__WEBPACK_IMPORTED_MODULE_0__.watchEffect,
       BreezeAuthenticatedLayout: _Layouts_Authenticated_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
       get Head() {
         return _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_2__.Head;
@@ -22184,7 +22215,7 @@ var _hoisted_20 = {
 };
 var _hoisted_21 = {
   key: 0,
-  "class": "bg-white shadow"
+  "class": "bg-gray-800 text-white shadow"
 };
 var _hoisted_22 = {
   "class": "max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8"
@@ -22746,7 +22777,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "font-semibold text-xl text-white leading-tight"
 }, " Dashboard ", -1 /* HOISTED */);
 var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "py-12"
@@ -22787,7 +22818,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "font-semibold text-xl text-white leading-tight"
 }, " Create Room ", -1 /* HOISTED */);
 var _hoisted_2 = {
   "class": "py-12"
@@ -22854,7 +22885,7 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, "Add Room", -1 /* HOISTED */);
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Head"], {
-    title: "Dashboard"
+    title: "Create Room"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["BreezeAuthenticatedLayout"], null, {
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_1];
@@ -22939,7 +22970,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "font-semibold text-xl text-white leading-tight"
 }, " Edit Room ", -1 /* HOISTED */);
 var _hoisted_2 = {
   "class": "py-12"
@@ -23091,7 +23122,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
-  "class": "font-semibold text-xl text-gray-800 leading-tight"
+  "class": "font-semibold text-xl text-white leading-tight"
 }, " Rooms ", -1 /* HOISTED */);
 var _hoisted_2 = {
   "class": "py-12"
@@ -23102,71 +23133,105 @@ var _hoisted_3 = {
 var _hoisted_4 = {
   "class": "sm:flex sm:items-center"
 };
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "sm:flex-auto"
-}, null, -1 /* HOISTED */);
+var _hoisted_5 = {
+  key: 0,
+  "class": "mb-4 px-4 py-2 bg-green-100 text-green-800 rounded"
+};
 var _hoisted_6 = {
-  "class": "mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
+  "class": "sm:flex-auto"
 };
 var _hoisted_7 = {
-  "class": "mt-8 flow-root"
+  "class": "mt-4 sm:ml-16 sm:mt-0 sm:flex-none"
 };
 var _hoisted_8 = {
-  "class": "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
+  "class": "mt-8 flow-root"
 };
 var _hoisted_9 = {
-  "class": "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
+  "class": "-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
 };
 var _hoisted_10 = {
-  "class": "overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg"
+  "class": "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8"
 };
 var _hoisted_11 = {
+  "class": "overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg"
+};
+var _hoisted_12 = {
   "class": "min-w-full divide-y divide-gray-300"
 };
-var _hoisted_12 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
-  "class": "bg-gray-50"
+var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
+  "class": "bg-gray-800 text-white"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
-  "class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+  "class": "py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-white sm:pl-6"
 }, "Room Number"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
-  "class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+  "class": "px-3 py-3.5 text-left text-sm font-semibold text-white"
 }, "Price"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
-  "class": "px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+  "class": "px-3 py-3.5 text-left text-sm font-semibold white"
 }, "Room Type"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   "class": "relative py-3.5 pl-3 pr-4 sm:pr-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "sr-only"
 }, "Actions")])])], -1 /* HOISTED */);
-var _hoisted_13 = {
+var _hoisted_14 = {
   "class": "divide-y divide-gray-200 bg-white"
 };
-var _hoisted_14 = {
-  "class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
-};
 var _hoisted_15 = {
-  "class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+  "class": "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6"
 };
 var _hoisted_16 = {
   "class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
 };
 var _hoisted_17 = {
+  "class": "whitespace-nowrap px-3 py-4 text-sm text-gray-500"
+};
+var _hoisted_18 = {
   "class": "relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6"
 };
-var _hoisted_18 = ["onClick"];
+var _hoisted_19 = ["onClick"];
+var _hoisted_20 = {
+  key: 0,
+  "class": "flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+};
+var _hoisted_21 = {
+  "class": "hidden sm:flex sm:flex-1 sm:items-center sm:justify-between"
+};
+var _hoisted_22 = {
+  "class": "text-sm text-gray-700"
+};
+var _hoisted_23 = {
+  "class": "font-medium"
+};
+var _hoisted_24 = {
+  "class": "font-medium"
+};
+var _hoisted_25 = {
+  "class": "font-medium"
+};
+var _hoisted_26 = {
+  "class": "isolate inline-flex -space-x-px rounded-md shadow-sm",
+  "aria-label": "Pagination"
+};
+var _hoisted_27 = ["href", "innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Head"], {
-    title: "Dashboard"
+    title: "Rooms"
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["BreezeAuthenticatedLayout"], null, {
     header: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_1];
     }),
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["SuccessMessage"], {
-        message: $setup.flash.success
-      }, null, 8 /* PROPS */, ["message"]), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" Success Message "), $setup.showSuccessMessage ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.successMessage), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+          return $setup.search = $event;
+        }),
+        onInput: $setup.searchRooms,
+        type: "text",
+        placeholder: "Search rooms...",
+        "class": "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      }, null, 544 /* NEED_HYDRATION, NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $setup.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
         href: _ctx.route('rooms.create'),
         "class": "inline-block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       }, {
@@ -23174,10 +23239,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Add room ")];
         }),
         _: 1 /* STABLE */
-      }, 8 /* PROPS */, ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_13, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.props.rooms.data, function (room) {
+      }, 8 /* PROPS */, ["href"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_12, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", _hoisted_14, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.props.rooms.data, function (room) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
           key: room.id
-        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.room_number), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.price), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.room_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.room_number), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.price), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(room.room_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Link"], {
           href: _ctx.route('rooms.edit', room.id),
           "class": "text-indigo-600 hover:text-indigo-900 mr-3"
         }, {
@@ -23190,13 +23255,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             return $setup.confirmDelete(room.id);
           },
           "class": "text-red-600 hover:text-red-900"
-        }, "Delete", 8 /* PROPS */, _hoisted_18)])]);
-      }), 128 /* KEYED_FRAGMENT */))])])])])])])])])];
+        }, "Delete", 8 /* PROPS */, _hoisted_19)])]);
+      }), 128 /* KEYED_FRAGMENT */))])])])])])]), $setup.props.rooms.links && $setup.props.rooms.links.length > 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Showing "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.rooms.from), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" to "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.rooms.to), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" of "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.props.rooms.total), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" results ")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_26, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.props.rooms.links, function (link) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+          key: link.label,
+          href: link.url,
+          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([link.active ? 'z-10 bg-indigo-600 text-white' : 'text-gray-900', 'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0']),
+          innerHTML: link.label
+        }, null, 10 /* CLASS, PROPS */, _hoisted_27);
+      }), 128 /* KEYED_FRAGMENT */))])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])];
     }),
     _: 1 /* STABLE */
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)($setup["Pagination"], {
-    links: $setup.props.rooms.links
-  }, null, 8 /* PROPS */, ["links"])], 64 /* STABLE_FRAGMENT */);
+  })], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

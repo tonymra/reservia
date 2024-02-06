@@ -20,21 +20,22 @@ class RoomController extends Controller
             abort(403);
         }
 
+        $query = Room::query()->orderBy('room_number');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('room_number', 'like', "%{$search}%")
+                    ->orWhere('price', 'like', "%{$search}%")
+                    ->orWhere('room_type', 'like', "%{$search}%");
+            });
+        }
+
         return Inertia::render('Rooms/Index', [
-            'rooms' => Room::query()
-                ->orderBy('room_number')
-                ->paginate(10)
-                ->withQueryString()
-                ->through(fn ($room) => [
-                    'id' => $room->id,
-                    'room_number' => $room->room_number,
-                    'price' => $room->price,
-                    'room_type' => $room->room_type,
-                ]),
+            'rooms' => $query->paginate(10)->withQueryString(),
             'routeName' => Route::currentRouteName(),
         ]);
-
     }
+
 
     /**
      * Show the form for creating a new resource.

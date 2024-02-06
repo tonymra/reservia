@@ -1,9 +1,9 @@
 <template>
-    <Head title="Dashboard" />
+    <Head title="Create Room" />
 
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-white leading-tight">
                 Create Room
             </h2>
         </template>

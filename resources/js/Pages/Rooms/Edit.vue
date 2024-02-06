@@ -3,7 +3,7 @@
 
     <BreezeAuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="font-semibold text-xl text-white leading-tight">
                 Edit Room
             </h2>
         </template>
@@ -69,12 +69,13 @@ import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from '@inertiajs/inertia';
 import {reactive} from "vue";
+import successMessage from "@/Components/Shared/SuccessMessage.vue";
 
 const { props } = usePage();
 const room = reactive(props.value.room);
 
-console.log('Props:', props);
-console.log('Room:', room);
+console.log('Props Edit:', props);
+console.log('Room Edit:', room);
 
 
 
@@ -94,7 +95,7 @@ const submitForm = () => {
         preserveScroll: true,
         onSuccess: () => {
 
-            Inertia.visit(route('rooms.index'));
+            Inertia.visit(route('rooms.index'), { only: ['flash'] });
 
         },
     });

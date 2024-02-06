@@ -20,5 +20,8 @@
     <body class="font-sans antialiased h-full">
         @inertia
 
+        <footer class="bg-gray-800 text-white text-center p-4">
+            © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+        </footer>
     </body>
 </html>
