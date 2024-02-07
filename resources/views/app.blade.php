@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html class="h-full bg-gray-50" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title inertia>{{ config('app.name', 'Reservia') }}</title>
+    <title inertia>{{ config('app.name', 'Reservia') }}</title>
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        <!-- Scripts -->
-        @routes
-        <script src="{{ mix('js/app.js') }}" defer></script>
-        @inertiaHead
-    </head>
-    <body class="font-sans antialiased h-full">
-        @inertia
+    <!-- Scripts -->
+    @routes
+    <script src="{{ mix('js/app.js') }}" defer></script>
+    @inertiaHead
+</head>
+<body class="font-sans antialiased flex flex-col h-screen">
+<div class="flex-grow">
+    @inertia
+</div>
 
-        <footer class="bg-gray-800 text-white text-center p-4">
-            © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
-        </footer>
-    </body>
+<footer class="bg-gray-800 text-white text-center p-4">
+    © {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+</footer>
+</body>
 </html>

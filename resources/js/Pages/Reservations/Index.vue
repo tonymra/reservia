@@ -14,6 +14,7 @@
                 <div v-if="showSuccessMessage" class="mb-4 px-4 py-2 bg-green-100 text-green-800 rounded">
                     {{ successMessage }}
                 </div>
+
                 <div class="sm:flex sm:items-center">
 
                     <div class="sm:flex-auto">
@@ -99,8 +100,6 @@
 import {ref, watchEffect} from 'vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import {Head,Link,  usePage} from '@inertiajs/inertia-vue3';
-import Pagination from '@/Components/Pagination.vue';
-import SuccessMessage from "@/Components/Shared/SuccessMessage.vue";
 import {Inertia} from "@inertiajs/inertia";
 
 
