@@ -44,7 +44,9 @@ watch(() => props.value.routeName, (newRouteName) => {
                                 <BreezeNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </BreezeNavLink>
-
+                                <BreezeNavLink :href="route('reservations.index')" :active="route().current('reservations.index')">
+                                    Reservations
+                                </BreezeNavLink>
                                 <BreezeNavLink :href="route('rooms.index')" :active="route().current('rooms.index')">
                                     Rooms
                                 </BreezeNavLink>
@@ -93,6 +95,9 @@ watch(() => props.value.routeName, (newRouteName) => {
                     <div class="pt-2 pb-3 space-y-1">
                         <BreezeResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </BreezeResponsiveNavLink>
+                        <BreezeResponsiveNavLink :href="route('reservations.index')" :active="route().current('reservations.index')">
+                            Reservations
                         </BreezeResponsiveNavLink>
                         <BreezeResponsiveNavLink :href="route('rooms.index')" :active="route().current('rooms.index')">
                             Rooms

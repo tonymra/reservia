@@ -19,7 +19,7 @@ class CreateReservationsTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('adults');
             $table->integer('children')->nullable();
-            $table->string('status', 30);
+            $table->string('status', 30)->default('pending');
             $table->text('notes')->nullable();
             $table->dateTime('check_in');
             $table->dateTime('check_out');
