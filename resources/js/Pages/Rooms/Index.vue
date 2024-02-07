@@ -137,9 +137,6 @@ const confirmDelete = (roomId) => {
     }
 };
 
-
 console.log("Rooms Index" + props.rooms);
 
-// Since props is reactive, you can directly use props.rooms in your template
-// No need to wrap it with ref() unless you're manipulating it
 </script>

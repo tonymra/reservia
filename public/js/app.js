@@ -21489,7 +21489,7 @@ __webpack_require__.r(__webpack_exports__);
       console.log('Submitting form', form);
       form.post(route('reservations.store'), {
         onSuccess: function onSuccess() {
-          form.reset(); // Adjusted to reset the entire form
+          form.reset();
         }
       });
     };
@@ -21680,10 +21680,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     console.log("Reservations Index" + props.reservations);
-
-    // Since props is reactive, you can directly use props.reservations in your template
-    // No need to wrap it with ref() unless you're manipulating it
-
     var __returned__ = {
       page: page,
       flash: flash,
@@ -21810,8 +21806,6 @@ __webpack_require__.r(__webpack_exports__);
     var _usePage = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.usePage)(),
       props = _usePage.props;
     var room = (0,vue__WEBPACK_IMPORTED_MODULE_3__.reactive)(props.value.room);
-    console.log('Props Edit:', props);
-    console.log('Room Edit:', room);
 
     // Initialize form state with room data
     var form = (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
@@ -21931,10 +21925,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     };
     console.log("Rooms Index" + props.rooms);
-
-    // Since props is reactive, you can directly use props.rooms in your template
-    // No need to wrap it with ref() unless you're manipulating it
-
     var __returned__ = {
       page: page,
       flash: flash,

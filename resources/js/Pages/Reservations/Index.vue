@@ -143,6 +143,4 @@ const confirmDelete = (reservationId) => {
 
 console.log("Reservations Index" + props.reservations);
 
-// Since props is reactive, you can directly use props.reservations in your template
-// No need to wrap it with ref() unless you're manipulating it
 </script>

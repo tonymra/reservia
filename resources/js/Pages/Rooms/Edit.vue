@@ -74,11 +74,6 @@ import successMessage from "@/Components/Shared/SuccessMessage.vue";
 const { props } = usePage();
 const room = reactive(props.value.room);
 
-console.log('Props Edit:', props);
-console.log('Room Edit:', room);
-
-
-
 // Initialize form state with room data
 const form = useForm({
     id: room.id || '',

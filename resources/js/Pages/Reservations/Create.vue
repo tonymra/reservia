@@ -214,7 +214,7 @@ const submitForm = () => {
     console.log('Submitting form', form);
     form.post(route('reservations.store'), {
         onSuccess: () => {
-            form.reset(); // Adjusted to reset the entire form
+            form.reset();
         },
     });
 };
