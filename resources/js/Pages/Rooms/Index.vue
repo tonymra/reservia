@@ -10,11 +10,12 @@
 
         <div class="py-12">
             <div class="px-4 sm:px-6 lg:px-8">
+                <!-- Success Message -->
+                <div v-if="showSuccessMessage" class="mb-4 px-4 py-2 bg-green-100 text-green-800 rounded">
+                    {{ successMessage }}
+                </div>
                 <div class="sm:flex sm:items-center">
-                    <!-- Success Message -->
-                    <div v-if="showSuccessMessage" class="mb-4 px-4 py-2 bg-green-100 text-green-800 rounded">
-                        {{ successMessage }}
-                    </div>
+
                     <div class="sm:flex-auto">
                         <input v-model="search" @input="searchRooms" type="text" placeholder="Search rooms..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                     </div>
@@ -72,7 +73,7 @@
                         </div>
                         <div>
                             <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                                <a v-for="link in props.rooms.links" :key="link.label" :href="link.url" :class="[link.active ? 'z-10 bg-indigo-600 text-white' : 'text-gray-900', 'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0']" v-html="link.label"></a>
+                                <Link v-for="link in props.rooms.links" :key="link.label" :href="link.url" :class="[link.active ? 'z-10 bg-indigo-600 text-white' : 'text-gray-900', 'relative inline-flex items-center px-4 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0']" v-html="link.label"></Link>
                             </nav>
                         </div>
                     </div>
